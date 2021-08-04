@@ -1,0 +1,93 @@
+
+
+d:\UdemySeleniumDocker\target>ls -al
+
+
+ Directory of d:\UdemySeleniumDocker
+ 
+ d:\UdemySeleniumDocker>docker build -t=vinsdocker/selenium-docker .
+ 
+ d:\UdemySeleniumDocker>docker images
+ 
+ d:\UdemySeleniumDocker>docker run -it --entrypoint=/bin/sh vinsdocker/selenium-docker
+ 
+ /usr/share/udemy #
+ 
+ 
+ *************************************
+ 1) Generate a updated project 
+ mvn clean package -DskipTests
+ 
+ 2) Look for available images
+  d:\UdemySeleniumDocker>docker images
+ 
+ 3) Build the project
+ docker build -t=vinsdocker/selenium-docker .
+ 
+ 
+ 4) Create a volume mapping
+ D:\UdemySeleniumDocker>docker run -it --entrypoint=/bin/sh -v D:/UdemySeleniumDocker/output:/usr/share/udemy/test-output vinsdocker/selenium-docker
+ 
+ 5) Run the testcases inside images {Here I have hardcoded localhost in BASE.TEST}
+/usr/share/udemy # java -cp selenium-docker.jar:selenium-docker-tests.jar:libs/* -DHUB_HOST=192.168.1.115 org.testng.TestNG search-module.xml
+*************************************************************
+Running test in COntainer. We nEed to provide environmenetal variables (-e)
+docker run -e HUB_HOST=192.168.1.115 -e MODULE=search-module.xml vinsdocker/selenium-docker
+
+*******************************************************
+
+d:\UdemySeleniumDocker>docker run -d -e HUB_HOST=192.168.1.115 -e MODULE=book-flight-module.xml -v D:/UdemySeleniumDocker/NewOutput:/usr/share/udemy/test-output vinsdocker/selenium-docker
+
+******************************************************************
+
+Emplty set of VM's for capabilities
+
+http://localhost:4444/wd/hub/status
+
+verify the Api for key "ready" to be true
+
+
+
+
+To see the run time logs :
+ContainerName Logs
+
+
+******************************************************
+Firefox issue 
+Docker shared memory default 64 mb
+
+ firefox:
+    image: selenium/node-firefox:3.14   
+	shm_size:'1gb'
+    depends_on:	
+      - hub
+    environment:
+      - HUB_HOST=hub
+	  
+Add shm i.e shared memory to more than 64 i.e 1gb or 512m
+
+*****************************************************
+To limit the logs
+ 
+docker-compose up | grep -e 'book-flight-module' -e 'search-module'
+
+*********************************************************
+
+
+Command-line options aka switches of grep:
+-e pattern.
+-i: Ignore uppercase vs. ...
+-v: Invert match.
+-c: Output count of matching lines only.
+-l: Output matching files only.
+-n: Precede each matching line with a line number.
+-b: A historical curiosity: precede each matching line with a block number.
+
+
+
+
+
+
+1) How to fix common Selenium errors?
+https://ultimateqa.com/common-selenium-webdriver-errors-fix/
